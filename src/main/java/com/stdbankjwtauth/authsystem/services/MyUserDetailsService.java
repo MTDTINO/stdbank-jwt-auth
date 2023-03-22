@@ -1,3 +1,4 @@
+/*
 package com.stdbankjwtauth.authsystem.services;
 
 import org.springframework.context.annotation.Bean;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+
 @Configuration
 @Service
 public class MyUserDetailsService {
@@ -16,8 +18,9 @@ public class MyUserDetailsService {
         PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         UserDetails user = User.withUsername("Tino")
             .password(encoder.encode("secret"))
-            .roles("USER")
+            .roles("ADMIN")
             .build();
         return new InMemoryUserDetailsManager(user);
     }
 }
+*/
