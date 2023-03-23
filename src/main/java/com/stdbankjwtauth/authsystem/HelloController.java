@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Tino
  */
 @RestController
-@RequestMapping("/url")
+//@RequestMapping("/url")
+//for some reason mapping won't work with @request mapping
 public class HelloController {
     @GetMapping("/")
     public String index(){
