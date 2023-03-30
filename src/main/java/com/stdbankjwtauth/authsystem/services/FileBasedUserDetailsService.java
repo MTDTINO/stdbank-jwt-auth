@@ -22,7 +22,7 @@ public class FileBasedUserDetailsService {
 	private static final String FILE_PATH = "C:\\repos\\STDBank-JWT-Auth-System\\stdbank-jwt-auth\\credentials.txt";
 	
 	@Bean
-    public InMemoryUserDetailsManager userDetailsService() {
+    public UserDetailsService userDetailsService() {
 		List<String> lines = new ArrayList<>();
 		try {
 			lines = Files.readAllLines(Paths.get(FILE_PATH));
