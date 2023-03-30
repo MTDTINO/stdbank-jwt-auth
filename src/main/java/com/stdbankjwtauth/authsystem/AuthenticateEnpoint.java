@@ -5,20 +5,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stdbankjwtauth.authsystem.models.AuthenticationRequest;
 import com.stdbankjwtauth.authsystem.models.AuthenticationResponse;
+import com.stdbankjwtauth.authsystem.services.FileBasedUserDetailsService;
 import com.stdbankjwtauth.authsystem.util.JwtUtil;
 
 @RestController
 public class AuthenticateEnpoint {
-	
 	@Autowired
 	private AuthenticationManager authenticationManager;
 	
@@ -28,7 +28,7 @@ public class AuthenticateEnpoint {
 	@Autowired
 	private JwtUtil jwtTokenUtil;
 	
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	@PostMapping("/authenticates")
 	public ResponseEntity <?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
 		try {
 			authenticationManager.authenticate(
@@ -44,4 +44,9 @@ public class AuthenticateEnpoint {
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
 	
+	@PostMapping("/users")
+	public ResponseEntity<User> createUser(@RequestBody User user) {
+	    return ResponseEntity.ok(user);
+	}
+
 }
