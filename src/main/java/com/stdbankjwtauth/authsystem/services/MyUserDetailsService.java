@@ -11,7 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 @Configuration
-@Service
+@Service  
 public class MyUserDetailsService {
 	@Bean
     public InMemoryUserDetailsManager userDetailsService() {
