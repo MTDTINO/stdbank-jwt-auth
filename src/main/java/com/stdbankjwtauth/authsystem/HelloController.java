@@ -6,7 +6,6 @@ package com.stdbankjwtauth.authsystem;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  *
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 //@RequestMapping("/url")
 //for some reason mapping won't work with @request mapping
 public class HelloController {
-    @GetMapping("/")
+    @GetMapping("/hello")
     public String index(){
     	return "Greeting from Spring Boot!";
     }
