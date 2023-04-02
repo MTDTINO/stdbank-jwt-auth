@@ -1,15 +1,17 @@
 package com.stdbankjwtauth.authsystem;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.stdbankjwtauth.authsystem.models.AuthenticationRequest;
@@ -23,12 +25,12 @@ public class AuthenticateEnpoint {
 	private AuthenticationManager authenticationManager;
 	
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private FileBasedUserDetailsService userDetailsService;
 	
 	@Autowired
 	private JwtUtil jwtTokenUtil;
 	
-	@PostMapping("/authenticates")
+	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
 	public ResponseEntity <?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception{
 		try {
 			authenticationManager.authenticate(
@@ -38,15 +40,9 @@ public class AuthenticateEnpoint {
 			throw new Exception("Incorrect username or password",e);
 			}
 		
-		final UserDetails userDetails = userDetailsService
+		final UserDetails userDetails = userDetailsService.userDetailsService()
 				.loadUserByUsername(authenticationRequest.getUsername());
 		final String jwt = jwtTokenUtil.generateToken(userDetails);
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
-	
-	@PostMapping("/users")
-	public ResponseEntity<User> createUser(@RequestBody User user) {
-	    return ResponseEntity.ok(user);
-	}
-
 }

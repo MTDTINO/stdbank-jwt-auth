@@ -5,7 +5,13 @@
 package com.stdbankjwtauth.authsystem;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 /**
  *
@@ -15,8 +21,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 //@RequestMapping("/url")
 //for some reason mapping won't work with @request mapping
 public class HelloController {
-    @GetMapping("/hello")
+	@RequestMapping(value = "/hello", method = RequestMethod.GET)
     public String index(){
     	return "Greeting from Spring Boot!";
     }
+    
+    @PostMapping("/users")
+	public ResponseEntity<String> helloTest(String message) {
+	    return ResponseEntity.ok("Authenticated");
+	}
 }

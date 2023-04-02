@@ -1,8 +1,7 @@
 package com.stdbankjwtauth.authsystem;
 
-import java.net.URI;
-
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -11,16 +10,23 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.thymeleaf.standard.expression.AndExpression;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.stdbankjwtauth.authsystem.filters.JwtRequestFilter;
 import com.stdbankjwtauth.authsystem.services.FileBasedUserDetailsService;
+
 
 @Configuration
 @EnableWebSecurity
 public class SecurirtyConfigurer extends WebSecurityConfiguration {
 	@Autowired
 	public FileBasedUserDetailsService userDetailsService;
-
+	
+	@Autowired
+	private JwtRequestFilter jwtRequestFilter;
 	/*
 	 protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 		auth.getAllUserDetailsService();
@@ -28,9 +34,7 @@ public class SecurirtyConfigurer extends WebSecurityConfiguration {
 	}
 	 */
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-		auth.userDetailsService(userDetailsService.userDetailsService())
-		.and()
-		.build();
+		auth.userDetailsService(userDetailsService.userDetailsService());
 	}
 	@Bean
 	public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
@@ -38,23 +42,48 @@ public class SecurirtyConfigurer extends WebSecurityConfiguration {
 	            .build();
 	}
 
-	protected void configure(HttpSecurity http) throws Exception{
+	protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		http
 		.csrf()
 		.disable()
-		.authorizeHttpRequests().requestMatchers("/authenticate")
-		.permitAll().anyRequest()
+		.authorizeHttpRequests()
+		.requestMatchers("/hello")
+		.permitAll()
+		.anyRequest()
 		.authenticated()
-		.and().sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+		.and()
+		.exceptionHandling()
+		.and()
+		.sessionManagement()
+		.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+		.and()
+		.httpBasic();
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		return http.build();
 	}
 	
-	@SuppressWarnings("deprecation")
-	protected void configure1(HttpSecurity http) throws Exception {
-	    http.authorizeRequests()
-	        .requestMatchers("/hello").permitAll()
-	        .anyRequest().authenticated()
-	        .and().httpBasic();
+	protected SecurityFilterChain filterChain1(HttpSecurity http) throws Exception{
+		http
+		.csrf()
+		.disable()
+		.authorizeHttpRequests()
+		.requestMatchers("/authenticate")
+		.permitAll()
+		.anyRequest()
+		.authenticated()
+		.and()
+		.httpBasic();
+		return http.build();
 	}
+	
+	protected void configure(HttpSecurity http) throws Exception {
+		http.csrf().disable();
+	}
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
+	
 	
 }

@@ -1,12 +1,18 @@
 package com.stdbankjwtauth.authsystem.models;
 
-public class AuthenticationRequest {
+import java.io.Serializable;
+
+public class AuthenticationRequest implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String username;
 	private String password;
 	
 	public AuthenticationRequest(String Username,String Password) {
-		this.username = Username;
-		this.password = Password;
+		this.setUsername(Username);
+		this.setPassword(Password);
 	}
 	
 	public String getUsername() {
@@ -22,5 +28,9 @@ public class AuthenticationRequest {
 	
 	public void setPassword(String Password) {
 		this.password = Password;
+	}
+	
+	public AuthenticationRequest() {
+		
 	}
 }
