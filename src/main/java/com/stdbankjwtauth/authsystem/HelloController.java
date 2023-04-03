@@ -21,13 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 //@RequestMapping("/url")
 //for some reason mapping won't work with @request mapping
 public class HelloController {
-	@RequestMapping(value = "/hello", method = RequestMethod.GET)
+	@RequestMapping(value = "/", method = RequestMethod.GET)
     public String index(){
-    	return "Greeting from Spring Boot!";
+    	return "Welcome to my STBA springboot project";
     }
-    
-    @PostMapping("/users")
-	public ResponseEntity<String> helloTest(String message) {
-	    return ResponseEntity.ok("Authenticated");
-	}
 }
