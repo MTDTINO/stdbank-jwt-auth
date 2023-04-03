@@ -26,10 +26,10 @@ public UserDetailsService userDetailsService() {
 		e.printStackTrace(); }
 	for (String line : lines) {
 		String[] parts = line.split(":"); 
-		//PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); 
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder(); 
 		UserDetails user
 				= User.withUsername(parts[0]) 
-				.password((parts[1]))
+				.password(encoder.encode(parts[1]))
 				.roles("USER") 
 				.build();
 				return new InMemoryUserDetailsManager(user); 
